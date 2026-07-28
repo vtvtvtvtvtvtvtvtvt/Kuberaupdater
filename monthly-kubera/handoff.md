@@ -17,7 +17,7 @@ Only the loans in the table below are manual (non-Plaid) and in scope for this r
 | --- | --- | --- | --: | --- |
 | 2920 Eagle Rock (VT 2021 seller note) | Ignacio Ramirez - VT 2021 LLC LOAN | `4cab8cc6-e02e-49e6-ac3b-ce5fd8ddd005` | 495,981 | AUTO (fixed lookup) |
 | 1974-1992 Lincoln (VT 1992) | Chase Bank - VT 1992 LLC LOAN | `f483cad9-8f40-40e5-8c49-acc3c3e1a5f7` | 1,470,133 | AUTO (amortize, resets 03/01/2027) |
-| 375 Canyon Vista residence (Wells Fargo) | Wells Fargo - MORTGAGE - 375 CV - 5676 | `1c62ed2d-fff5-47af-b525-02095931a170` | 889,397 | AUTO (amortize, resets ~01/01/2027) |
+| 375 Canyon Vista residence (Wells Fargo) | Wells Fargo - MORTGAGE - 375 CV - 5676 | `1c62ed2d-fff5-47af-b525-02095931a170` | 904,422 | AUTO (amortize, resets ~01/01/2027) |
 | 712-826 Glendale (VT 826) | Thorofare Loan - 714-826 Glendale Ave | `bd487e0a-f0b6-44dd-a568-586b68ba1c04` | 18,504,734 | STATEMENT |
 | Verdugo SBA EIDL (VT 3011) | SBA - VT 3011 LLC EIDL LOAN | `6b3d1a8e-b7f9-4832-8bca-55f33fb4cf5c` | 145,000 | STATEMENT (until anchored) |
 | Verdugo SBA EIDL (VT 3045) | SBA - VT 3045 LLC EIDL LOAN | `6877eb35-2e0b-4308-83c3-d161a3acba10` | 672,000 | STATEMENT (until anchored) |
@@ -82,25 +82,27 @@ Commercial term loan, 30-year amortization with a **rate reset on 03/01/2027**.
 - Rate: **2.500%** fixed until **~01/01/2027** (statement: "Until 01/01/27"; online: "Next ARM adjustment 02/01/27")
 - Monthly payment (P&I): **$4,109.26**
 
-> **What Kubera holds:** Kubera's value (889,397) = **interest-bearing principal + second principal**
-> (875,657.02 + 13,740.54 = 889,397.56). It does **NOT** include the $15,024.28 deferred interest.
-> ⚠️ This corrects the note in `quarterly-pfs/handoff.md` (J24), which says "Kubera value already
-> includes deferred interest." Confirm with Vartan whether Kubera should stay principal-only (current
-> state) or be grossed up to include deferred interest; keep both handoffs consistent with the decision.
+> **What Kubera holds (CONVENTION — decided 2026-07-28):** Kubera's value = **interest-bearing
+> principal + second principal + deferred interest**. As of the 07/01/2026 payment that is
+> 875,657.02 + 13,740.54 + 15,024.28 = **904,421.84** (written to Kubera on 2026-07-28).
+> All three components are carried in the Kubera figure so it reflects the full payoff amount.
+> This aligns with `quarterly-pfs/handoff.md` (J24). The two fixed deferred balances
+> (second principal $13,740.54 + deferred interest $15,024.28 = **$28,764.82**) stay constant;
+> only the interest-bearing principal amortizes.
 
-**Method (only the interest-bearing principal amortizes):** interest = interest-bearing principal × 2.500% ÷ 12; principal = $4,109.26 − interest; the second-principal and deferred-interest balances stay fixed. Proposed Kubera value = new interest-bearing principal + 13,740.54.
+**Method (only the interest-bearing principal amortizes):** interest = interest-bearing principal × 2.500% ÷ 12; principal = $4,109.26 − interest; the second-principal and deferred-interest balances stay fixed. Proposed Kubera value = new interest-bearing principal + 28,764.82 (= 13,740.54 second principal + 15,024.28 deferred interest).
 
 **Computed Kubera-value table (enter the row for the current month):**
 
 | Month (payment applied) | Interest-bearing principal | Proposed Kubera value |
 | --- | --: | --: |
-| 07/01/2026 | 875,657.02 | 889,398 *(≈ current Kubera)* |
-| 08/01/2026 | 873,372.05 | 887,113 |
-| 09/01/2026 | 871,082.32 | 884,823 |
-| 10/01/2026 | 868,787.81 | 882,528 |
-| 11/01/2026 | 866,488.52 | 880,229 |
-| 12/01/2026 | 864,184.44 | 877,925 |
-| 01/01/2027 | 861,875.56 | 875,616 |
+| 07/01/2026 | 875,657.02 | 904,422 *(= current Kubera)* |
+| 08/01/2026 | 873,372.05 | 902,137 |
+| 09/01/2026 | 871,082.32 | 899,847 |
+| 10/01/2026 | 868,787.81 | 897,553 |
+| 11/01/2026 | 866,488.52 | 895,253 |
+| 12/01/2026 | 864,184.44 | 892,949 |
+| 01/01/2027 | 861,875.56 | 890,640 |
 | **02/01/2027 →** | **RESET** | **statement needed** |
 
 ---
@@ -114,7 +116,7 @@ These are never amortized by the routine. Each run, flag that a current statemen
 
 ## Open items
 1. The two SBA EIDLs are still carried at stale Kubera values. Anchor them from the May 2025 SBA statements, then update this file to move them into an AUTO group (with amortization inputs) if they amortize, or keep them STATEMENT if lender-reported.
-2. Resolve the Wells Fargo deferred-interest question above and align `quarterly-pfs/handoff.md` J24.
+2. ~~Resolve the Wells Fargo deferred-interest question.~~ **Resolved 2026-07-28:** Kubera value is grossed up to include deferred interest (interest-bearing principal + $13,740.54 second principal + $15,024.28 deferred interest = $904,421.84). Written to Kubera and aligned in `quarterly-pfs/handoff.md` J24.
 3. Both AUTO reset dates (Lincoln 03/01/2027, Wells Fargo ~01/01–02/01/2027) fall within ~8 months. After each reset, replace that loan's computed table with a fresh statement anchor.
 
 ## Write mechanics
