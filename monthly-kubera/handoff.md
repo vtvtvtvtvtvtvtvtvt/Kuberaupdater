@@ -2,13 +2,11 @@
 
 Reference data for the **monthly Kubera routine only**. This routine keeps the manual (non-Plaid) loan balances current in Kubera. It PROPOSES writes on the scheduled run and writes only after Vartan approves (see `monthly-kubera/routine-prompt.md`).
 
-> ⚠️ **This file is partially scaffolded.** The custodian IDs and current Kubera
-> balances below were pulled live from Kubera on **2026-07-28** and are correct.
-> The **amortization inputs** for the AUTO loans (original principal, rate, term,
-> monthly payment, first-payment date, payment day) are **placeholders marked
-> `‹NEEDS DATA›`** — the routine cannot compute an AUTO balance until these are
-> filled in from each loan's note/statement. Until then, treat every loan as a
-> STATEMENT loan and flag it.
+> Custodian IDs and current balances were pulled live from Kubera on **2026-07-28**.
+> AUTO-loan amortization terms were confirmed from source documents on the same date
+> (VT 2021 amortization schedule; Chase executed loan docs + 02/2026 statement;
+> Wells Fargo 06/2026 statement). Each computed table below was reconciled against the
+> live Kubera balance and matches within a few dollars.
 
 ## Scope — manual loans only
 Only the loans in the table below are manual (non-Plaid) and in scope for this routine. **Every other Kubera loan is Plaid-linked and self-updates — never touch it.** For reference, the out-of-scope Plaid loans are: Columbia VT 3011 / VT 3045 / VT 1207 / VT 3149 / VT 3400 LLC loans.
@@ -17,57 +15,107 @@ Only the loans in the table below are manual (non-Plaid) and in scope for this r
 
 | Loan | Kubera item name | custodianId | Current Kubera value | Class |
 | --- | --- | --- | --: | --- |
-| 2920 Eagle Rock (VT 2021 seller note) | Ignacio Ramirez - VT 2021 LLC LOAN | `4cab8cc6-e02e-49e6-ac3b-ce5fd8ddd005` | 495,981 | AUTO |
-| 1974-1992 Lincoln (VT 1992) | Chase Bank - VT 1992 LLC LOAN | `f483cad9-8f40-40e5-8c49-acc3c3e1a5f7` | 1,470,133 | AUTO |
-| 375 Canyon Vista residence (Wells Fargo) | Wells Fargo - MORTGAGE - 375 CV - 5676 | `1c62ed2d-fff5-47af-b525-02095931a170` | 889,397 | AUTO |
+| 2920 Eagle Rock (VT 2021 seller note) | Ignacio Ramirez - VT 2021 LLC LOAN | `4cab8cc6-e02e-49e6-ac3b-ce5fd8ddd005` | 495,981 | AUTO (fixed lookup) |
+| 1974-1992 Lincoln (VT 1992) | Chase Bank - VT 1992 LLC LOAN | `f483cad9-8f40-40e5-8c49-acc3c3e1a5f7` | 1,470,133 | AUTO (amortize, resets 03/01/2027) |
+| 375 Canyon Vista residence (Wells Fargo) | Wells Fargo - MORTGAGE - 375 CV - 5676 | `1c62ed2d-fff5-47af-b525-02095931a170` | 889,397 | AUTO (amortize, resets ~01/01/2027) |
 | 712-826 Glendale (VT 826) | Thorofare Loan - 714-826 Glendale Ave | `bd487e0a-f0b6-44dd-a568-586b68ba1c04` | 18,504,734 | STATEMENT |
 | Verdugo SBA EIDL (VT 3011) | SBA - VT 3011 LLC EIDL LOAN | `6b3d1a8e-b7f9-4832-8bca-55f33fb4cf5c` | 145,000 | STATEMENT (until anchored) |
 | Verdugo SBA EIDL (VT 3045) | SBA - VT 3045 LLC EIDL LOAN | `6877eb35-2e0b-4308-83c3-d161a3acba10` | 672,000 | STATEMENT (until anchored) |
 
-## AUTO loans — amortization inputs (FILL IN before relying on computed balances)
+---
 
-The routine derives the current-month balance by amortizing from these inputs. Fill each `‹NEEDS DATA›` from the loan note / most recent statement, then the routine can compute AUTO balances instead of flagging them.
+## AUTO loan 1 — 2920 Eagle Rock (Ignacio Ramirez / VT 2021 LLC seller note)
 
-### 2920 Eagle Rock — Ignacio Ramirez / VT 2021 LLC seller note
-- Original principal: `‹NEEDS DATA›`
-- Annual interest rate: `‹NEEDS DATA›`
-- Amortization term (months): `‹NEEDS DATA›`
-- Monthly payment (P&I): `‹NEEDS DATA›`
-- First payment date: `‹NEEDS DATA›`
-- Payment day of month: `‹NEEDS DATA›`
-- Balloon / maturity date, if any: `‹NEEDS DATA›`
-- Anchor: balance `495,981` as of 2026-07-28 (Kubera). Confirm against a statement.
+Fixed-rate, fully-amortizing seller note. **No rate reset — this is a pure month → balance lookup; never needs a statement.**
 
-### 1974-1992 Lincoln — Chase / VT 1992 LLC loan
-- Original principal: `‹NEEDS DATA›`
-- Annual interest rate: `‹NEEDS DATA›`
-- Amortization term (months): `‹NEEDS DATA›`
-- Monthly payment (P&I): `‹NEEDS DATA›`
-- First payment date: `‹NEEDS DATA›`
-- Payment day of month: `‹NEEDS DATA›`
-- **Hard stop:** rate/terms reset **03/01/2027** — do NOT compute past this date; flag that a new statement is needed.
-- Anchor: balance `1,470,133` as of 2026-07-28 (Kubera). Confirm against a statement.
+- Original principal: ~$810,000 · Rate: ~4.75% fixed · Term: 240 months (20 yr)
+- Monthly payment (P&I): **$5,234** · First payment: ~Jun 2016 · Payoff: **May 2036**
+- The routine reads the ending balance for the current month from the schedule below.
 
-### 375 Canyon Vista — Wells Fargo mortgage
-- Original principal: `‹NEEDS DATA›`
-- Annual interest rate: `2.5%` fixed (per Kubera note). Confirm.
-- Amortization term (months): `‹NEEDS DATA›`
-- Monthly payment (P&I): `‹NEEDS DATA›`
-- First payment date: `‹NEEDS DATA›`
-- Payment day of month: `‹NEEDS DATA›`
-- **Hard stop / discrepancy to resolve:** the routine prompt says the rate resets **01/01/2027**; the Kubera note says **"2.5% Fixed until 02/01/2027."** Confirm the correct reset date, then align both. Do NOT compute past the reset; flag for a statement.
-- Note: the Kubera value already includes deferred interest — keep that convention.
-- Anchor: balance `889,397` as of 2026-07-28 (Kubera). Confirm against a statement.
+**Ending-balance schedule (from the source amortization table; enter the row for the current month):**
+
+| Month | Balance | Month | Balance |
+| --- | --: | --- | --: |
+| Jun 2026 | 495,981 *(= current Kubera)* | Jan 2027 | 472,809 |
+| Jul 2026 | 492,710 | Feb 2027 | 469,446 |
+| Aug 2026 | 489,426 | Mar 2027 | 466,070 |
+| Sep 2026 | 486,129 | Apr 2027 | 462,681 |
+| Oct 2026 | 482,819 | May 2027 | 459,278 |
+| Nov 2026 | 479,495 | Jun 2027 | 455,861 |
+| Dec 2026 | 476,159 | Jul 2027 | 452,431 |
+
+For months beyond this table, extend from the source amortization schedule (same fixed $5,234 payment, ~4.75%, payoff May 2036).
+
+---
+
+## AUTO loan 2 — 1974-1992 Lincoln (Chase / VT 1992 LLC · "Lincoln Row, LLC")
+
+Commercial term loan, 30-year amortization with a **rate reset on 03/01/2027**.
+
+- Original principal: **$1,600,000** · Closed ~02/28/2022 · Loan #200542845
+- Rate: **3.71%** fixed until 03/01/2027, accrued **actual/360** · Amort term: 360 months
+- Monthly payment (P&I): **$7,373.58** (escrow $0)
+- **Hard stop:** do NOT compute past **03/01/2027** — the rate resets; flag for a statement.
+- Reconciliation: anchoring on the 02/2026 statement (ending balance $1,481,363.30) and amortizing forward reproduces the current Kubera balance (Jun 2026 ≈ $1,470,139 vs Kubera $1,470,133). ✓
+
+**Method:** interest = balance × 3.71% ÷ 12; principal = $7,373.58 − interest; new balance = balance − principal.
+
+**Computed ending-balance table (enter the row for the current month):**
+
+| Month | Balance | Month | Balance |
+| --- | --: | --- | --: |
+| Jun 2026 | 1,470,137 *(≈ current Kubera)* | Nov 2026 | 1,455,907 |
+| Jul 2026 | 1,467,308 | Dec 2026 | 1,453,034 |
+| Aug 2026 | 1,464,471 | Jan 2027 | 1,450,153 |
+| Sep 2026 | 1,461,625 | Feb 2027 | 1,447,263 |
+| Oct 2026 | 1,458,770 | **Mar 2027 →** | **RESET — statement needed** |
+
+---
+
+## AUTO loan 3 — 375 Canyon Vista (Wells Fargo mortgage · residence)
+
+**Modified ARM with deferred balances — read the composition note carefully.** Loan #0565255676, maturity 01/2050.
+
+- Interest-bearing (unpaid) principal: **$875,657.02** as of the 07/01/2026 payment
+- Deferred "second principal": **$13,740.54** (fixed; due at payoff/sale/maturity)
+- Deferred interest: **$15,024.28** (fixed; due at payoff/sale/maturity)
+- Rate: **2.500%** fixed until **~01/01/2027** (statement: "Until 01/01/27"; online: "Next ARM adjustment 02/01/27")
+- Monthly payment (P&I): **$4,109.26**
+
+> **What Kubera holds:** Kubera's value (889,397) = **interest-bearing principal + second principal**
+> (875,657.02 + 13,740.54 = 889,397.56). It does **NOT** include the $15,024.28 deferred interest.
+> ⚠️ This corrects the note in `quarterly-pfs/handoff.md` (J24), which says "Kubera value already
+> includes deferred interest." Confirm with Vartan whether Kubera should stay principal-only (current
+> state) or be grossed up to include deferred interest; keep both handoffs consistent with the decision.
+
+**Method (only the interest-bearing principal amortizes):** interest = interest-bearing principal × 2.500% ÷ 12; principal = $4,109.26 − interest; the second-principal and deferred-interest balances stay fixed. Proposed Kubera value = new interest-bearing principal + 13,740.54.
+
+**Computed Kubera-value table (enter the row for the current month):**
+
+| Month (payment applied) | Interest-bearing principal | Proposed Kubera value |
+| --- | --: | --: |
+| 07/01/2026 | 875,657.02 | 889,398 *(≈ current Kubera)* |
+| 08/01/2026 | 873,372.05 | 887,113 |
+| 09/01/2026 | 871,082.32 | 884,823 |
+| 10/01/2026 | 868,787.81 | 882,528 |
+| 11/01/2026 | 866,488.52 | 880,229 |
+| 12/01/2026 | 864,184.44 | 877,925 |
+| 01/01/2027 | 861,875.56 | 875,616 |
+| **02/01/2027 →** | **RESET** | **statement needed** |
+
+---
 
 ## STATEMENT loans — no computation, flag for a fresh statement
 These are never amortized by the routine. Each run, flag that a current statement is needed and enter the confirmed balance only on approval.
 
-- **Thorofare (714-826 Glendale):** current `18,504,734`. Interest-only / lender-reported — always statement-driven.
+- **Thorofare (714-826 Glendale):** current `18,504,734`. Lender-reported — always statement-driven.
 - **SBA EIDL VT 3011:** current `145,000`. Carried at a stale value — anchor from the May 2025 SBA statement, then move to AUTO if it amortizes.
 - **SBA EIDL VT 3045:** current `672,000`. Same — anchor from the May 2025 SBA statement, then move to AUTO if it amortizes.
 
-## Open item
-The two SBA EIDLs are still carried at stale Kubera values. Anchor them from the May 2025 SBA statements, then update this file to move them into the AUTO group (with full amortization inputs) if they amortize, or keep them STATEMENT if they remain lender-reported.
+## Open items
+1. The two SBA EIDLs are still carried at stale Kubera values. Anchor them from the May 2025 SBA statements, then update this file to move them into an AUTO group (with amortization inputs) if they amortize, or keep them STATEMENT if lender-reported.
+2. Resolve the Wells Fargo deferred-interest question above and align `quarterly-pfs/handoff.md` J24.
+3. Both AUTO reset dates (Lincoln 03/01/2027, Wells Fargo ~01/01–02/01/2027) fall within ~8 months. After each reset, replace that loan's computed table with a fresh statement anchor.
 
 ## Write mechanics
-On approval only: `Kubera:update_portfolio_item(custodianId, value)` — one call per approved loan, using the custodianId from the table above. Report success/failure per item.
+On approval only: `Kubera:update_portfolio_item(custodianId, value)` — one call per approved loan, using the custodianId from the scope table above. Report success/failure per item.

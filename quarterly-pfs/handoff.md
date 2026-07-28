@@ -21,7 +21,7 @@ Reference data for the **quarterly PFS routine only**. This routine READS from K
 | J15 | 3149 Verdugo (VT 3149) | Columbia VT 3149 LLC LOAN |
 | J16 | 1974-1992 Lincoln (VT 1992) | Chase VT 1992 LLC LOAN |
 | J19 | 712-826 Glendale (VT 826) | Thorofare Loan |
-| J24 | 375 Canyon Vista (residence) | Wells Fargo 375 CV mortgage (Kubera value already includes deferred interest) |
+| J24 | 375 Canyon Vista (residence) | Wells Fargo 375 CV mortgage (Kubera value = interest-bearing principal + deferred "second principal"; per the 06/2026 WF statement it does NOT include the separate deferred-interest balance — see `monthly-kubera/handoff.md`, AUTO loan 3. Confirm with Vartan.) |
 
 **Schedule A — Cash:** each row is labeled with its institution + last-four; match Kubera bank/brokerage cash accounts to rows by those labels and enter the balance.
 
