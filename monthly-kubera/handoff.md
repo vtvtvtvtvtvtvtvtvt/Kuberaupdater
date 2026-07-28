@@ -20,7 +20,7 @@ Only the items in the table below are manual (non-Plaid) and in scope for this r
 | 2920 Eagle Rock (VT 2021 seller note) | Ignacio Ramirez - VT 2021 LLC LOAN | `4cab8cc6-e02e-49e6-ac3b-ce5fd8ddd005` | 495,981 | AUTO (fixed lookup) |
 | 1974-1992 Lincoln (VT 1992) | Chase Bank - VT 1992 LLC LOAN | `f483cad9-8f40-40e5-8c49-acc3c3e1a5f7` | 1,470,133 | AUTO (amortize, resets 03/01/2027) |
 | 375 Canyon Vista residence (Wells Fargo) | Wells Fargo - MORTGAGE - 375 CV - 5676 | `1c62ed2d-fff5-47af-b525-02095931a170` | 904,422 | AUTO (amortize, resets ~01/01/2027) |
-| VT 3400 LLC Note 1 (note receivable — **ASSET**) | VT 3400 LLC Note 1 | `4e76a440-849d-47e4-9fd5-77f09e598fcb` | 495,000 | AUTO (accrue 8%/yr, value ↑ — ASSET) |
+| VT 3400 LLC Note 1 (note receivable — **ASSET**) | VT 3400 LLC Note 1 | `4e76a440-849d-47e4-9fd5-77f09e598fcb` | 502,037 | AUTO (accrue 8.5%/yr compounding, value ↑ — ASSET) |
 | 712-826 Glendale (VT 826) | Thorofare Loan - 714-826 Glendale Ave | `bd487e0a-f0b6-44dd-a568-586b68ba1c04` | 18,504,734 | STATEMENT |
 | Verdugo SBA EIDL (VT 3011) | SBA - VT 3011 LLC EIDL LOAN | `6b3d1a8e-b7f9-4832-8bca-55f33fb4cf5c` | 145,000 | STATEMENT (until anchored) |
 | Verdugo SBA EIDL (VT 3045) | SBA - VT 3045 LLC EIDL LOAN | `6877eb35-2e0b-4308-83c3-d161a3acba10` | 672,000 | STATEMENT (until anchored) |
@@ -112,38 +112,36 @@ Commercial term loan, 30-year amortization with a **rate reset on 03/01/2027**.
 
 ## AUTO item 4 — VT 3400 LLC Note 1 (accruing note receivable · ASSET)
 
-**This is an ASSET, not a debt — accrual INCREASES the Kubera value.** Vartan holds a $495,000 note against VT 3400 LLC. No payments are due for the first 12 months; interest accrues monthly at 8%/yr and is added to the balance. Kubera has carried it flat at $495,000 since origination and has never been updated for accrual, so the first approved run is a **catch-up** to the current month.
+**This is an ASSET, not a debt — accrual INCREASES the Kubera value.** VT 3400 LLC (lender = Vartan) holds a $495,000 note against **2762ftbd LLC** (borrower), secured by 2762 W Ave 35, LA (APN 5457-022-022). Per the **Modification Agreement executed 05/27/2026**, interest accrues at 8.5%/yr with **no payments for the first 12 months**; the balance compounds monthly until payments begin.
 
-- Principal: **$495,000** · Origination / anchor: **2025-12-16** (Kubera entry date; value clean at 495,000 through 2026-07-28 per item history)
-- Rate: **8.0%/yr**, accrued monthly · Monthly rate = 8% ÷ 12 = **0.66667%**
-- **No payments for the first 12 months** → interest accrues and is added to the balance each month.
-- **Hard stop: 2026-12-16** (month 12). The no-payment window ends here — do NOT extend past it; confirm the post-window terms (payments begin? balloon? continue accruing?) before proposing any later month.
+- Principal: **$495,000** · Accrual anchor: **2026-06-01** (clean first-of-month start → **no stub**)
+- Rate: **8.5%/yr**, compounded monthly · Monthly factor = 1 + 0.085 ÷ 12 = **1.00708333** (≈ $3,506/mo on the opening balance)
+- **No payments** for 12 months (06/01/2026 → 06/01/2027).
+- **Payments begin 06/01/2027:** $4,391.00/mo P&I on the 1st, until maturity **05/30/2051**. (The $4,391 payment reconciles to the compounded 06/01/2027 balance of $538,753.49 amortized over 288 months — confirming monthly compounding.)
+- **Hard stop: the 2027-05-27 run is the last accrual run** (it posts the 06/01/2027 balance $538,753.49). From the 2027-06-27 run on, the note is in **repayment** — switch to an amortization schedule ($4,391/mo); do NOT keep accruing.
 
-> ⚠️ **ASSUMPTIONS pending Vartan's confirmation** — the numbers below depend on these; correct if wrong:
-> 1. **Compounding basis:** monthly **compounding** (unpaid interest capitalizes and itself accrues) is the default column. If the note is **simple** interest (8%/yr on the original $495,000 only, +$3,300/mo flat), use the simple-interest column instead.
-> 2. **Accrual start:** interest runs from **2025-12-16**, accruing on the **16th** of each month.
+> **Run convention:** the routine runs on the **27th** and posts the balance **as of the 1st of the following month** (crediting the upcoming month). Method: new balance = prior first-of-month balance × 1.00708333.
 
-**Method (default — monthly compounding):** new balance = prior balance × (1 + 0.08 ÷ 12). Anchor = $495,000 on 2025-12-16; accrue on the 16th.
+**Computed value table (on each run date, enter the "value to post"):**
 
-**Computed value table (enter the row for the current accrual month — the latest 16th on/before the run date):**
+| Run date (~27th) | Posts balance as of | Value to post |
+| --- | --- | --: |
+| 2026-07-27 *(current)* | 2026-08-01 | **502,037.34** |
+| 2026-08-27 | 2026-09-01 | 505,593.44 |
+| 2026-09-27 | 2026-10-01 | 509,174.72 |
+| 2026-10-27 | 2026-11-01 | 512,781.37 |
+| 2026-11-27 | 2026-12-01 | 516,413.57 |
+| 2026-12-27 | 2027-01-01 | 520,071.50 |
+| 2027-01-27 | 2027-02-01 | 523,755.34 |
+| 2027-02-27 | 2027-03-01 | 527,465.27 |
+| 2027-03-27 | 2027-04-01 | 531,201.48 |
+| 2027-04-27 | 2027-05-01 | 534,964.16 |
+| 2027-05-27 | 2027-06-01 | 538,753.49 |
+| **2027-06-27 →** | repayment begun | **HARD STOP — switch to $4,391/mo amortization** |
 
-| Accrual month (16th) | Compounding (default) | Simple-interest alt (+3,300/mo) |
-| --- | --: | --: |
-| 2025-12-16 (origination) | 495,000.00 | 495,000.00 |
-| 2026-01-16 | 498,300.00 | 498,300.00 |
-| 2026-02-16 | 501,622.00 | 501,600.00 |
-| 2026-03-16 | 504,966.15 | 504,900.00 |
-| 2026-04-16 | 508,332.59 | 508,200.00 |
-| 2026-05-16 | 511,721.47 | 511,500.00 |
-| 2026-06-16 | 515,132.95 | 514,800.00 |
-| 2026-07-16 | 518,567.17 *(current month)* | 518,100.00 |
-| 2026-08-16 | 522,024.28 | 521,400.00 |
-| 2026-09-16 | 525,504.44 | 524,700.00 |
-| 2026-10-16 | 529,007.80 | 528,000.00 |
-| 2026-11-16 | 532,534.52 | 531,300.00 |
-| **2026-12-16 →** | **536,084.75 — HARD STOP** | **534,600.00 — HARD STOP** |
+*(Reference first-of-month rests: 06/01/2026 anchor = 495,000.00; 07/01/2026 = 498,506.25.)*
 
-As of the run date (2026-07-28) the current accrual month is **2026-07-16**, so the proposed value is **$518,567.17** (compounding) / **$518,100.00** (simple). Kubera currently shows $495,000, so this is a catch-up of **~$23,567**.
+As of the current run (2026-07-28) the value to post is the **2026-08-01** rest = **$502,037.34** (principal + 2 monthly accruals). Kubera was carried flat at $495,000, so this update also catches up the missed accrual.
 
 ---
 
@@ -158,7 +156,7 @@ These are never amortized by the routine. Each run, flag that a current statemen
 1. The two SBA EIDLs are still carried at stale Kubera values. Anchor them from the May 2025 SBA statements, then update this file to move them into an AUTO group (with amortization inputs) if they amortize, or keep them STATEMENT if lender-reported.
 2. ~~Resolve the Wells Fargo deferred-interest question.~~ **Resolved 2026-07-28:** Kubera value is grossed up to include deferred interest (interest-bearing principal + $13,740.54 second principal + $15,024.28 deferred interest = $904,421.84). Written to Kubera and aligned in `quarterly-pfs/handoff.md` J24.
 3. Both AUTO reset dates (Lincoln 03/01/2027, Wells Fargo ~01/01–02/01/2027) fall within ~8 months. After each reset, replace that loan's computed table with a fresh statement anchor.
-4. **VT 3400 LLC Note 1 (new AUTO item 4):** confirm the accrual basis (monthly **compounding** vs **simple**) and the start date with Vartan — the table defaults to monthly compounding from 2025-12-16. Kubera has never been updated for accrual, so the first approved run is a **~$23.6k catch-up** (to $518,567.17 compounding / $518,100 simple as of 07/2026). Hard stop at the 12-month mark (2026-12-16) — confirm post-window payment terms before extending.
+4. **VT 3400 LLC Note 1 (AUTO item 4):** terms confirmed from the 05/27/2026 Modification Agreement — $495,000, 8.5%/yr compounding monthly from 2026-06-01, no payments until 06/01/2027, then $4,391.00/mo P&I to maturity 05/30/2051. Runs on the 27th, posting the following 1st. **When the 2027-05-27 run posts the 06/01/2027 balance ($538,753.49), the accrual phase is over** — before the 2027-06-27 run, build the $4,391/mo amortization schedule and switch AUTO item 4 to a repayment table.
 
 ## Write mechanics
 On approval only: `Kubera:update_portfolio_item(custodianId, value)` — one call per approved loan, using the custodianId from the scope table above. Report success/failure per item.

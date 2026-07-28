@@ -7,7 +7,7 @@ Schedule: monthly. Keeps the manual (non-Plaid) loan/note balances current in Ku
 - Only the manual items in the handoff are in scope. Every other Kubera item is Plaid-linked and updates itself — leave those alone. In particular, do NOT touch the Plaid *Columbia — VT 3400 LLC LOAN — 4192* debt; the in-scope VT 3400 item is the separate *VT 3400 LLC Note 1* asset.
 
 ## Step 1 — Determine each manual item's value for the current month
-- **AUTO items** (2920 Eagle Rock, Lincoln, Wells Fargo — debts that amortize DOWN; **VT 3400 LLC Note 1** — an accruing note *asset* that grows UP at 8%/yr): look up the current month's value from the tables in the handoff. Respect the hard-stops — Lincoln resets 03/01/2027, Wells Fargo resets ~01/01/2027, and VT 3400 Note 1's 12-month no-payment window ends 2026-12-16. Past those dates, do NOT compute; flag that a statement / confirmed terms are needed.
+- **AUTO items** (2920 Eagle Rock, Lincoln, Wells Fargo — debts that amortize DOWN; **VT 3400 LLC Note 1** — an accruing note *asset* that grows UP at 8.5%/yr, compounding monthly): look up the current month's value from the tables in the handoff. For VT 3400 Note 1 the routine runs on the 27th and posts the balance as of the **1st of the following month**. Respect the hard-stops — Lincoln resets 03/01/2027, Wells Fargo resets ~01/01/2027, and VT 3400 Note 1's no-payment window ends 06/01/2027 (payments of $4,391/mo begin then — switch to its amortization table). Past those dates, do NOT compute; flag that a statement / confirmed terms are needed.
 - **STATEMENT loans** (Thorofare; the two SBA EIDLs until anchored): do NOT compute. Flag that a fresh statement is needed.
 
 ## Step 2 — Output a proposal (no writes)
