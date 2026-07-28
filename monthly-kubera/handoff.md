@@ -143,6 +143,48 @@ Commercial term loan, 30-year amortization with a **rate reset on 03/01/2027**.
 
 As of the current run (2026-07-28) the value to post is the **2026-08-01** rest = **$502,037.34** (principal + 2 monthly accruals). Kubera was carried flat at $495,000, so this update also catches up the missed accrual.
 
+### AUTO item 4 — repayment phase (from 06/01/2027) — READY TO SWITCH IN
+
+Once payments begin, the note **amortizes DOWN** at **$4,391.00/mo** (8.5%/yr, interest in arrears). Financed balance = **$538,753.50** as of 06/01/2027 (the last accrual value). Same run convention — run the 27th, post the following 1st. When the 2027-05-27 accrual run has posted, replace the accrual table above with this one.
+
+**Method:** each month — interest = balance × 0.085 ÷ 12; principal = 4,391.00 − interest; new balance = balance − principal. Post the balance as of the following 1st.
+
+**First repayment year (run date → value to post):**
+
+| Run (~27th) | Posts as of | Value to post |
+| --- | --- | --: |
+| 2027-06-27 | 2027-07-01 | 538,178.67 |
+| 2027-07-27 | 2027-08-01 | 537,599.77 |
+| 2027-08-27 | 2027-09-01 | 537,016.77 |
+| 2027-09-27 | 2027-10-01 | 536,429.64 |
+| 2027-10-27 | 2027-11-01 | 535,838.35 |
+| 2027-11-27 | 2027-12-01 | 535,242.87 |
+| 2027-12-27 | 2028-01-01 | 534,643.17 |
+| 2028-01-27 | 2028-02-01 | 534,039.23 |
+| 2028-02-27 | 2028-03-01 | 533,431.01 |
+| 2028-03-27 | 2028-04-01 | 532,818.48 |
+| 2028-04-27 | 2028-05-01 | 532,201.61 |
+| 2028-05-27 | 2028-06-01 | 531,580.37 |
+
+**Annual checkpoints (balance as of 06/01)** — to sanity-check the running balance without carrying the full 288-row schedule:
+
+| As of 06/01 | Balance | | As of 06/01 | Balance |
+| --- | --: | --- | --- | --: |
+| 2028 | 531,580.37 | | 2040 | 375,841.15 |
+| 2029 | 523,773.20 | | 2041 | 354,268.05 |
+| 2030 | 515,275.94 | | 2042 | 330,788.08 |
+| 2031 | 506,027.60 | | 2043 | 305,232.69 |
+| 2032 | 495,961.80 | | 2044 | 277,418.44 |
+| 2033 | 485,006.27 | | 2045 | 247,145.67 |
+| 2034 | 473,082.37 | | 2046 | 214,197.06 |
+| 2035 | 460,104.51 | | 2047 | 178,336.08 |
+| 2036 | 445,979.52 | | 2048 | 139,305.33 |
+| 2037 | 430,606.01 | | 2049 | 96,824.61 |
+| 2038 | 413,873.62 | | 2050 | 50,588.99 |
+| 2039 | 395,662.25 | | 2051 | 266.55 |
+
+**Payoff:** the fixed $4,391 payment retires the note by **mid-2051** — balance is $266.55 as of 06/01/2051, cleared by a final ~$268 payment (note's stated maturity is 05/30/2051; the small residual is a rounding stub from $4,391.00 vs the exact $4,391.28 level payment). At payoff the Kubera value reaches $0 — **archive the item.** For any month not listed, compute it from the method above.
+
 ---
 
 ## STATEMENT loans — no computation, flag for a fresh statement
