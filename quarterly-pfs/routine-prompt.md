@@ -15,7 +15,7 @@ You maintain Vartan Tchekmedyian's Personal Financial Statement (PFS), an Excel 
 - Confirm the "Dated as of" value: the last day of the quarter that just closed (03/31, 06/30, 09/30, or 12/31).
 
 ## Step 1 — Read from Kubera and populate the PFS
-Read the current default portfolio and copy each value into its matching PFS cell (mapping is in `Handoff - Quarterly PFS Routine.md`):
+Read the current default portfolio and copy each value into its matching PFS cell (mapping is in `quarterly-pfs/handoff.md`):
 - **Schedule A (Cash):** all bank/brokerage cash balances.
 - **Schedule B (Securities):** SUTXX/Schwab, the combined crypto line, Fidelity.
 - **Schedule C (Real Estate, column J):** every loan balance Kubera holds.
@@ -35,4 +35,4 @@ Present the draft PFS plus a summary: every changed field (old -> new), the resu
 On approval, save the final PFS in the reference format and present it. **Name the file without underscores** — spaces in the name, hyphens in the date: `Vartan Tchekmedyian PFS MM-DD-YYYY.xlsx` (for example, `Vartan Tchekmedyian PFS 09-30-2026.xlsx`).
 
 ## Reference
-The Kubera-item -> PFS-cell mapping is in `Handoff - Quarterly PFS Routine.md` and reflected in the reference workbook's Schedule C. After each approved run, replace `PFS Format Reference.xlsx` with the newly approved file so the next quarter starts from an accurate, correctly-formatted baseline.
+The Kubera-item -> PFS-cell mapping is in `quarterly-pfs/handoff.md` and reflected in the reference workbook's Schedule C. After each approved run, replace `PFS Format Reference.xlsx` with the newly approved file so the next quarter starts from an accurate, correctly-formatted baseline.
