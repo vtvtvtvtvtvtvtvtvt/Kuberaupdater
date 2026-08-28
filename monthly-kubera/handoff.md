@@ -21,7 +21,7 @@ Only the items in the table below are manual (non-Plaid) and in scope for this r
 | 1974-1992 Lincoln (VT 1992) | Chase Bank - VT 1992 LLC LOAN | `f483cad9-8f40-40e5-8c49-acc3c3e1a5f7` | 1,470,133 | AUTO (amortize, resets 03/01/2027) |
 | 375 Canyon Vista residence (Wells Fargo) | Wells Fargo - MORTGAGE - 375 CV - 5676 | `1c62ed2d-fff5-47af-b525-02095931a170` | 904,422 | AUTO (amortize, resets ~01/01/2027) |
 | VT 3400 LLC Note 1 (note receivable — **ASSET**) | VT 3400 LLC Note 1 | `4e76a440-849d-47e4-9fd5-77f09e598fcb` | 502,037 | AUTO (accrue 8.5%/yr compounding, value ↑ — ASSET) |
-| 712-826 Glendale (VT 826) | Thorofare Loan - 714-826 Glendale Ave | `bd487e0a-f0b6-44dd-a568-586b68ba1c04` | 18,504,734 | STATEMENT |
+| 712-826 Glendale (VT 826) | Thorofare Loan - 714-826 Glendale Ave | `bd487e0a-f0b6-44dd-a568-586b68ba1c04` | 19,090,533 *(per 08/22/2026 statement, due 09/01/2026 — see STATEMENT loans section)* | STATEMENT |
 | Verdugo SBA EIDL (VT 3011) | SBA - VT 3011 LLC EIDL LOAN | `6b3d1a8e-b7f9-4832-8bca-55f33fb4cf5c` | 145,000 | STATEMENT (until anchored) |
 | Verdugo SBA EIDL (VT 3045) | SBA - VT 3045 LLC EIDL LOAN | `6877eb35-2e0b-4308-83c3-d161a3acba10` | 672,000 | STATEMENT (until anchored) |
 
@@ -85,13 +85,22 @@ Commercial term loan, 30-year amortization with a **rate reset on 03/01/2027**.
 - Rate: **2.500%** fixed until **~01/01/2027** (statement: "Until 01/01/27"; online: "Next ARM adjustment 02/01/27")
 - Monthly payment (P&I): **$4,109.26**
 
-> **What Kubera holds (CONVENTION — decided 2026-07-28):** Kubera's value = **interest-bearing
+> **What Kubera holds (CONVENTION — decided 2026-07-28, reconfirmed 2026-08-28):** Kubera's value = **interest-bearing
 > principal + second principal + deferred interest**. As of the 07/01/2026 payment that is
-> 875,657.02 + 13,740.54 + 15,024.28 = **904,421.84** (written to Kubera on 2026-07-28).
+> 875,657.02 + 13,740.54 + 15,024.28 = **904,421.84**.
 > All three components are carried in the Kubera figure so it reflects the full payoff amount.
 > This aligns with `quarterly-pfs/handoff.md` (J24). The two fixed deferred balances
 > (second principal $13,740.54 + deferred interest $15,024.28 = **$28,764.82**) stay constant;
 > only the interest-bearing principal amortizes.
+>
+> **Cadence — update only on the 27th (with the rest of this routine):** on 2026-07-11 and
+> 2026-08-05 this item was updated off-cycle (outside this routine, on the 11th/5th of the
+> month rather than the 27th) to interest-bearing principal + second principal **only**,
+> dropping the $15,024.28 deferred interest — e.g. 08/05/2026 → $887,112.59 instead of the
+> $902,136.87 the gross-up convention calls for. Vartan confirmed 2026-08-28: keep the gross-up
+> (deferred interest included) and update this item **only** as part of this routine's 27th run —
+> do not let an off-cycle update stand uncorrected; the next 27th run should true it back up to
+> the gross-up figure for the current month.
 
 **Method (only the interest-bearing principal amortizes):** interest = interest-bearing principal × 2.500% ÷ 12; principal = $4,109.26 − interest; the second-principal and deferred-interest balances stay fixed. Proposed Kubera value = new interest-bearing principal + 28,764.82 (= 13,740.54 second principal + 15,024.28 deferred interest).
 
@@ -190,7 +199,7 @@ Once payments begin, the note **amortizes DOWN** at **$4,391.00/mo** (8.5%/yr, i
 ## STATEMENT loans — no computation, flag for a fresh statement
 These are never amortized by the routine. Each run, flag that a current statement is needed and enter the confirmed balance only on approval.
 
-- **Thorofare (714-826 Glendale):** current `18,504,734`. Lender-reported — always statement-driven.
+- **Thorofare (714-826 Glendale):** current `19,090,533` (Current Principal Balance per Situs AMC statement, loan #330184116, statement date 08/22/2026, payment due 09/01/2026; Deferred Interest Balance on that statement is $0.00, so no add-on). Prior value was `18,504,734`. Lender-reported — always statement-driven.
 - **SBA EIDL VT 3011:** current `145,000`. Carried at a stale value — anchor from the May 2025 SBA statement, then move to AUTO if it amortizes.
 - **SBA EIDL VT 3045:** current `672,000`. Same — anchor from the May 2025 SBA statement, then move to AUTO if it amortizes.
 
