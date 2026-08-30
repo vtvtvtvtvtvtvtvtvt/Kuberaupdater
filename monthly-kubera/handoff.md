@@ -109,7 +109,7 @@ Commercial term loan, 30-year amortization with a **rate reset on 03/01/2027**.
 | Month (payment applied) | Interest-bearing principal | Proposed Kubera value |
 | --- | --: | --: |
 | 07/01/2026 | 875,657.02 | 904,422 *(= current Kubera)* |
-| 08/01/2026 | 873,372.05 | 902,137 |
+| 08/01/2026 | 873,372.05 | 902,137 *(confirmed by 08/02/2026 Wells Fargo statement: unpaid principal $873,372.05 + unpaid second principal $13,740.54 + deferred interest $15,024.28)* |
 | 09/01/2026 | 871,082.32 | 899,847 |
 | 10/01/2026 | 868,787.81 | 897,553 |
 | 11/01/2026 | 866,488.52 | 895,253 |
